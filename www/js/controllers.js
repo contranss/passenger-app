@@ -6,5 +6,4 @@ angular.module('starter.controllers', [])
 
 .controller('NotificationCtrl', function($scope) {})
 
-.controller('AccountCtrl', function($scope) {})
-});
+.controller('AccountCtrl', function($scope) {});

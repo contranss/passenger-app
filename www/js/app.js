@@ -99,15 +99,36 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         }
       }
     })
-  .state('tab.badges', {
-    url: '/badges',
+  
+  .state('tab.profile', {
+    url: '/profile',
     views: {
-      'tab-badges': {
-        templateUrl: 'templates/tab-badges.html',
+      'tab-profile': {
+        templateUrl: 'templates/tab-profile.html',
         controller: 'AccountCtrl'
       }
     }
   });
+
+  .state('tab.badges', {
+    url: '/badges',
+    views: {
+      'tab-badges': {
+        templateUrl: 'templates/users/badges.html',
+        controller: 'AccountCtrl'
+      }
+    }
+  });
+
+  .state('tab.lane', {
+    url: '/lane',
+    views: {
+      'tab-lane': {
+        templateUrl: 'templates/users/lane.html',
+        controller: 'AccountCtrl'
+      }
+    }
+  });  
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/tab/dash');

@@ -46,14 +46,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services']).
                 controller: 'NotificationCtrl'
             }
         }
-    }).state('tab.complaint', {
-        url: '/complaint',
-        views: {
-            'tab-dash': {
-                templateUrl: 'templates/tab-complaint.html',
-                controller: 'DashCtrl'
-            }
-        }
     }).state('tab.users-login', {
         url: '/users/:login',
         views: {

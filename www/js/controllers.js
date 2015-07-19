@@ -64,9 +64,7 @@ angular.module('starter.controllers', []).controller('AppCtrl', function($scope,
         title: 'Cowbell',
         id: 6
     }];
-}).controller('PlaylistCtrl', function($scope, $stateParams) {
-
-}).controller('StartCtrl', function($scope, $state, $stateParams, Routes) {
+}).controller('PlaylistCtrl', function($scope, $stateParams) {}).controller('StartCtrl', function($scope, $state, $stateParams, Routes) {
     $scope.search = function(query) {
         Routes.search({
             "search": query
@@ -83,7 +81,9 @@ angular.module('starter.controllers', []).controller('AppCtrl', function($scope,
     $scope.search("");
     $scope.info = function(choice) {
         console.log($scope.route_id);
-        $state.go('app.browse', {id: $scope.route_id});
+        $state.go('app.browse', {
+            id: $scope.route_id
+        });
     };
 }).controller('TripCtrl', ['$scope', '$state', '$stateParams', '$cordovaGeolocation', '$localStorage', 'Socket',
     function($scope, $state, $stateParams, $cordovaGeolocation, $localStorage, Socket) {
@@ -185,6 +185,17 @@ angular.module('starter.controllers', []).controller('AppCtrl', function($scope,
     $scope.stop = function() {
         $state.go('app.browse');
     };
-}).controller('NotificationCtrl', function($scope, $state, $stateParams) {
-    
+}).controller('NotificationCtrl', function($scope, $state, $stateParams, $timeout, Status) {
+    function callAtTimeout() {
+        var notifications = [];
+        Status.get({}, function(status) {
+            status.hits.forEach(function(item) {
+                notifications.push(item._source);
+            });
+        });
+        $scope.notifications = notifications;
+        console.log('lol');
+    }
+    callAtTimeout();
+    $timeout(callAtTimeout, 5000);
 });

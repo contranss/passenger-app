@@ -18,4 +18,25 @@ angular.module('starter')
 	}, {
 		stripTrailingSlashes: false
 	});
+})
+
+.factory('Status', function($resource) {
+  return $resource('http://46.101.249.46/api/status/', {
+		id: '@_id'
+	},{
+		page: {
+			method: 'GET',
+			url: 'http://46.101.249.46/api/status/?page=:page&size=:size',
+			params: {				
+				// page: '@_page',
+				page: '@_page',
+				size: '@_size'
+			},
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		}
+	}, {
+		stripTrailingSlashes: false
+	});
 });

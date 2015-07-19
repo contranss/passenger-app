@@ -89,6 +89,7 @@ angular.module('starter.controllers', []).controller('AppCtrl', function($scope,
     function($scope, $state, $stateParams, $cordovaGeolocation, $localStorage, Socket, Status, $timeout) {
         console.log($stateParams.id);
         var vm = $scope;
+
         function callAtTimeout() {
             var notifications = [];
             Status.page({
@@ -105,21 +106,25 @@ angular.module('starter.controllers', []).controller('AppCtrl', function($scope,
         }
         callAtTimeout();
         $timeout(callAtTimeout, 5000);
-
         vm.complaint = function() {
-            $state.go('app.complaints', {id: $stateParams.id});
+            $state.go('app.complaints', {
+                id: $stateParams.id
+            });
         };
-
         vm.back = function() {
-          $state.go('app.search');  
+            $state.go('app.search');
         };
         vm.map = function() {
-          $state.go('app.map', {id: $stateParams.id});  
+            $state.go('app.map', {
+                id: $stateParams.id
+            });
         };
     }
 ]).controller('TripStatsCtrl', function($scope, $state, $stateParams) {
     $scope.stop = function() {
-        $state.go('app.browse', {id: $stateParams.id});
+        $state.go('app.browse', {
+            id: $stateParams.id
+        });
     };
 }).controller('NotificationCtrl', function($scope, $state, $stateParams, $timeout, Status) {
     function callAtTimeout() {
@@ -137,7 +142,7 @@ angular.module('starter.controllers', []).controller('AppCtrl', function($scope,
     }
     callAtTimeout();
     $timeout(callAtTimeout, 5000);
-}).controller('MapCtrl', function($scope, $state, $stateParams, $timeout, Status) {
+}).controller('MapCtrl', function($scope, $state, $stateParams, $timeout, uiGmapGoogleMapApi, Status, Socket, Routes) {
     $scope.map = {
         center: {
             latitude: 37.966667,
@@ -145,8 +150,45 @@ angular.module('starter.controllers', []).controller('AppCtrl', function($scope,
         },
         zoom: 10
     };
-    
+    $scope.routes = [];
+    uiGmapGoogleMapApi.then(function(maps) {
+        Socket.onMessage(function(topic, message) {
+
+            var topic_tokens = topic.split("/");
+            var msg = JSON.parse(message.toString());
+            console.log(msg);
+            var route = null;
+            console.log($scope.routes);
+            for (var i = 0; i < $scope.routes.length; i++) {
+                if ($scope.routes[i].id == topic_tokens[1]) {
+                    route = $scope.routes[i];
+                }
+            }
+            if (route) {
+                route.latitude = msg.coords.latitude;
+                route.longitude = msg.coords.longitude;
+            } else {
+                route = {
+                    id: topic_tokens[1],
+                    latitude: msg.coords.latitude,
+                    longitude: msg.coords.longitude,
+                    show: false,
+                    time: msg.timestamp
+                };
+                route.onClick = function() {
+                    route.show = !route.show;
+                };
+                $scope.routes.push(route);
+            }
+            console.log($scope.routes);
+            $scope.$apply();
+        });
+        
+        Socket.subscribe('track/' + $stateParams.id + '/1');
+    });
     $scope.back = function() {
-        $state.go('app.browse', {id: $stateParams.id});
+        $state.go('app.browse', {
+            id: $stateParams.id
+        });
     };
 });

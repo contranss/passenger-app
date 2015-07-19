@@ -15,14 +15,17 @@
     </ion-header-bar>
     <ion-content>
       <ion-list>
+        <ion-item menu-close ui-sref="app.index">
+          Αρχική
+        </ion-item>
+        <ion-item menu-close ui-sref="app.search">
+          Δρομολόγια
+        </ion-item>
         <ion-item menu-close ng-click="login()">
           Login
         </ion-item>
         <ion-item menu-close ng-click="badges()">
           Badges
-        </ion-item>
-        <ion-item menu-close ng-click="startScreen()">
-        Αρχική
         </ion-item>
       </ion-list>
     </ion-content>

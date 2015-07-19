@@ -180,4 +180,6 @@ angular.module('starter.controllers', []).controller('AppCtrl', function($scope,
     $scope.stop = function() {
         $state.go('app.browse');
     };
+}).controller('NotificationCtrl', function($scope, $state, $stateParams) {
+    
 });

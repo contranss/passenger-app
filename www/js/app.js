@@ -28,21 +28,31 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'ngResou
   $stateProvider
 
     .state('app', {
-    url: '/app',
-    abstract: true,
-    templateUrl: 'templates/menu.html',
-    controller: 'AppCtrl'
-  })
+      url: '/app',
+      abstract: true,
+      templateUrl: 'templates/menu.html',
+      controller: 'AppCtrl'
+    })
 
-  .state('app.search', {
-    url: '/search',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/start.html',
-        controller: 'StartCtrl'
+    .state('app.search', {
+      url: '/search',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/start.html',
+          controller: 'StartCtrl'
+        }
       }
-    }
-  })
+    })
+
+    .state('app.index', {
+      url: '/index',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/index.html',
+          controller: 'NotificationCtrl'
+        }
+      }
+    })
 
   .state('app.browse', {
       url: '/browse/:id',

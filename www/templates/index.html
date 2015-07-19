@@ -1,0 +1,7 @@
+<ion-view view-title="Con.Tran.S.S">
+	<ion-content>
+		<div class="list list-inset">
+			<ion-radio ng-repeat="item in notifications" ng-model="item.id" ng-value="">{{ item.short_name }} | {{ item.long_name }}</ion-radio>
+		</div>
+	</ion-content>
+</ion-view>

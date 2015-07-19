@@ -75,10 +75,15 @@ angular.module('starter.controllers', []).controller('AppCtrl', function($scope,
             $scope.routes = data.results;
         });
     };
+    $scope.route_id = "";
+    $scope.change_route = function(id) {
+        $scope.route_id = id;
+        console.log($scope.route_id);
+    };
     $scope.search("");
     $scope.info = function(choice) {
-        console.log($scope.choice);
-        $state.go('app.browse');
+        console.log($scope.route_id);
+        $state.go('app.browse', {id: $scope.route_id});
     };
 }).controller('TripCtrl', ['$scope', '$state', '$stateParams', '$cordovaGeolocation', '$localStorage', 'Socket',
     function($scope, $state, $stateParams, $cordovaGeolocation, $localStorage, Socket) {

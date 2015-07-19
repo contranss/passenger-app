@@ -54,6 +54,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'ngResou
       }
     })
 
+    .state('app.map', {
+      url: '/map/:id',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/map.html',
+          controller: 'NotificationCtrl'
+        }
+      }
+    })
+
   .state('app.browse', {
       url: '/browse/:id',
       views: {

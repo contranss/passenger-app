@@ -109,6 +109,13 @@ angular.module('starter.controllers', []).controller('AppCtrl', function($scope,
         vm.complaint = function() {
             $state.go('app.complaints', {id: $stateParams.id});
         };
+
+        vm.back = function() {
+          $state.go('app.search');  
+        };
+        vm.map = function() {
+          $state.go('app.map', {id: $stateParams.id});  
+        };
     }
 ]).controller('TripStatsCtrl', function($scope, $state, $stateParams) {
     $scope.stop = function() {
@@ -130,4 +137,8 @@ angular.module('starter.controllers', []).controller('AppCtrl', function($scope,
     }
     callAtTimeout();
     $timeout(callAtTimeout, 5000);
+}).controller('NotificationCtrl', function($scope, $state, $stateParams, $timeout, Status) {
+    $scope.back = function() {
+        $state.go('app.browse', {id: $stateParams.id});
+    };
 });

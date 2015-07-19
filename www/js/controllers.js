@@ -188,7 +188,7 @@ angular.module('starter.controllers', []).controller('AppCtrl', function($scope,
 }).controller('NotificationCtrl', function($scope, $state, $stateParams, $timeout, Status) {
     function callAtTimeout() {
         var notifications = [];
-        Status.get({}, function(status) {
+        Status.page({size: 100}, function(status) {
             status.hits.forEach(function(item) {
                 notifications.push(item._source);
             });

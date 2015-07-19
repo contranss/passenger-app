@@ -85,10 +85,15 @@ angular.module('starter.controllers', []).controller('AppCtrl', function($scope,
             id: $scope.route_id
         });
     };
-}).controller('TripCtrl', ['$scope', '$state', '$stateParams', '$cordovaGeolocation', '$localStorage', 'Socket', 'Status', '$timeout',
-    function($scope, $state, $stateParams, $cordovaGeolocation, $localStorage, Socket, Status, $timeout) {
+}).controller('TripCtrl', ['$scope', '$state', '$stateParams', '$cordovaGeolocation', '$localStorage', 'Socket', 'Status', 'Routes', '$timeout',
+    function($scope, $state, $stateParams, $cordovaGeolocation, $localStorage, Socket, Status, Routes, $timeout) {
         console.log($stateParams.id);
         var vm = $scope;
+        Routes.get({
+            id: $stateParams.id
+        }, function(item) {
+            $scope.title = '(' + item.short_name + ') ' + item.long_name;
+        });
 
         function callAtTimeout() {
             var notifications = [];
@@ -120,7 +125,12 @@ angular.module('starter.controllers', []).controller('AppCtrl', function($scope,
             });
         };
     }
-]).controller('TripStatsCtrl', function($scope, $state, $stateParams) {
+]).controller('TripStatsCtrl', function($scope, $state, $stateParams, Routes) {
+    Routes.get({
+            id: $stateParams.id
+        }, function(item) {
+            $scope.title = '(' + item.short_name + ') ' + item.long_name;
+        });
     $scope.stop = function() {
         $state.go('app.browse', {
             id: $stateParams.id
@@ -153,37 +163,41 @@ angular.module('starter.controllers', []).controller('AppCtrl', function($scope,
     $scope.routes = [];
     uiGmapGoogleMapApi.then(function(maps) {
         Socket.onMessage(function(topic, message) {
-
             var topic_tokens = topic.split("/");
-            var msg = JSON.parse(message.toString());
-            console.log(msg);
-            var route = null;
-            console.log($scope.routes);
-            for (var i = 0; i < $scope.routes.length; i++) {
-                if ($scope.routes[i].id == topic_tokens[1]) {
-                    route = $scope.routes[i];
+            Routes.get({
+                id: topic_tokens[1]
+            }, function(item) {
+                var msg = JSON.parse(message.toString());
+                var route = null;
+                for (var i = 0; i < $scope.routes.length; i++) {
+                    if ($scope.routes[i].id == topic_tokens[1]) {
+                        route = $scope.routes[i];
+                    }
                 }
-            }
-            if (route) {
-                route.latitude = msg.coords.latitude;
-                route.longitude = msg.coords.longitude;
-            } else {
-                route = {
-                    id: topic_tokens[1],
-                    latitude: msg.coords.latitude,
-                    longitude: msg.coords.longitude,
-                    show: false,
-                    time: msg.timestamp
-                };
-                route.onClick = function() {
-                    route.show = !route.show;
-                };
-                $scope.routes.push(route);
-            }
-            console.log($scope.routes);
-            $scope.$apply();
+                $scope.title = '(' + item.short_name + ') ' + item.long_name;
+                if (route) {
+                    route.latitude = msg.coords.latitude;
+                    route.longitude = msg.coords.longitude;
+                } else {
+                    route = {
+                        id: topic_tokens[1],
+                        short_name: item.short_name,
+                        text_color: item.text_color,
+                        color: item.color,
+                        latitude: msg.coords.latitude,
+                        longitude: msg.coords.longitude,
+                        show: false,
+                        time: msg.timestamp
+                    };
+                    route.onClick = function() {
+                        route.show = !route.show;
+                    };
+                    $scope.routes.push(route);
+                }
+                console.log($scope.routes);
+                $scope.$apply();
+            });
         });
-        
         Socket.subscribe('track/' + $stateParams.id + '/1');
     });
     $scope.back = function() {

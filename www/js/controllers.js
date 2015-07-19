@@ -125,17 +125,43 @@ angular.module('starter.controllers', []).controller('AppCtrl', function($scope,
             });
         };
     }
-]).controller('TripStatsCtrl', function($scope, $state, $stateParams, Routes) {
+]).controller('TripStatsCtrl', function($scope, $state, $stateParams, $cordovaGeolocation, Routes, Status) {
     Routes.get({
-            id: $stateParams.id
-        }, function(item) {
-            $scope.title = '(' + item.short_name + ') ' + item.long_name;
-        });
+        id: $stateParams.id
+    }, function(item) {
+        $scope.title = '(' + item.short_name + ') ' + item.long_name;
+    });
     $scope.stop = function() {
         $state.go('app.browse', {
             id: $stateParams.id
         });
     };
+    var post = function(post_type) {
+        var posOptions = {
+            timeout: 10000,
+            enableHighAccuracy: false
+        };
+        $cordovaGeolocation.getCurrentPosition(posOptions).then(function(position) {
+            var post = {
+                "timestamp": new Date(),
+                "type": post_type,
+                "route": $stateParams.id,
+                "comment": "Demo text",
+                "coords": [position.coords.longitude, position.coords.latitude],
+                "user": {
+                    "id": 1,
+                    "name": "George Theofilis",
+                    "type": "passenger"
+                }
+            };
+            Status.add_status({}, post, function(data) {
+                console.log(data);
+            });
+        }, function(err) {
+            // error
+        });
+    };
+    $scope.post = post;
 }).controller('NotificationCtrl', function($scope, $state, $stateParams, $timeout, Status) {
     function callAtTimeout() {
         var notifications = [];

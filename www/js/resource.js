@@ -35,6 +35,13 @@ angular.module('starter')
 			headers: {
 				'Content-Type': 'application/json'
 			}
+		},
+		add_status: {
+			method: 'POST',
+			url: 'http://46.101.249.46/api/status/',
+			headers: {
+				'Content-Type': 'application/json'
+			}
 		}
 	}, {
 		stripTrailingSlashes: false

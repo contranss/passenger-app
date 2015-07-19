@@ -10,9 +10,10 @@
 		</div>
 	</ion-content>
 	<div class="row" style=" position: fixed; bottom: 20px;">
-		<button class="button button-block button-royal ion-thumbsdown" ng-click="complaint()">
-		Κάνε σχόλιο
-		</button>
-		<button class="button button-block button-balanced ion-android-bus">Δες κίνηση</button>
+		<div class="button-bar">
+			<button class="button button-block button-royal ion-thumbsdown" ng-click="complaint()"> Σχόλιο</button>
+			<button class="button button-block button-assertive" ng-click="complaint()"> Πισω</button>
+			<button class="button button-block button-balanced ion-android-bus"> Χάρτης</button>
+		</div>
 	</div>
 </ion-view>

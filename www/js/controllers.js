@@ -137,7 +137,15 @@ angular.module('starter.controllers', []).controller('AppCtrl', function($scope,
     }
     callAtTimeout();
     $timeout(callAtTimeout, 5000);
-}).controller('NotificationCtrl', function($scope, $state, $stateParams, $timeout, Status) {
+}).controller('MapCtrl', function($scope, $state, $stateParams, $timeout, Status) {
+    $scope.map = {
+        center: {
+            latitude: 37.966667,
+            longitude: 23.716667
+        },
+        zoom: 10
+    };
+    
     $scope.back = function() {
         $state.go('app.browse', {id: $stateParams.id});
     };

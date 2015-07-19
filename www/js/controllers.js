@@ -107,13 +107,12 @@ angular.module('starter.controllers', []).controller('AppCtrl', function($scope,
         $timeout(callAtTimeout, 5000);
 
         vm.complaint = function() {
-            watchId.clearWatch();
-            $state.go('app.complaints');
+            $state.go('app.complaints', {id: $stateParams.id});
         };
     }
 ]).controller('TripStatsCtrl', function($scope, $state, $stateParams) {
     $scope.stop = function() {
-        $state.go('app.browse');
+        $state.go('app.browse', {id: $stateParams.id});
     };
 }).controller('NotificationCtrl', function($scope, $state, $stateParams, $timeout, Status) {
     function callAtTimeout() {

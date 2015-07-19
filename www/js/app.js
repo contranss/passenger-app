@@ -64,7 +64,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'ngResou
       }
     })
     .state('app.complaints', {
-      url: '/complaints',
+      url: '/complaints/:id',
       views: {
         'menuContent': {
           templateUrl: 'templates/complaints.html',
